@@ -38,12 +38,13 @@ const performQuery = async () => {
     const attrList = ['danceability', 'energy', 'key', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature', 'year']
 
     let query = 
-    `SELECT name, album, explicit, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature, year
+    `SELECT name, artists, album, explicit, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature, year
     FROM \`hw4-630.spotifysong.songs\` `
 
     attr = {
         'name': 'r',
         'album': 'r',
+        'artists': 'we', 
         'explicit': true,
         'danceability': [0.2, 0.9],
         'energy': [0.2, 0.9],
@@ -62,10 +63,13 @@ const performQuery = async () => {
     }
 
     if ('name' in attr && attr['name'] != '') {
-        query += isFirstFilter(query) + ` name LIKE \'%${attr['name']}%\' `;
+        query += isFirstFilter(query) + ` lower(name) LIKE \'%${attr['name'].toLowerCase()}%\' `;
     }
     if ('album' in attr && attr['album'] != '') {
-        query += isFirstFilter(query) + ` album LIKE \'%${attr['album']}%\' `;
+        query += isFirstFilter(query) + ` lower(album) LIKE \'%${attr['album'].toLowerCase()}%\' `;
+    }
+    if ('artists' in attr && attr['artists'] != '') {
+        query += isFirstFilter(query) + ` lower(artists) LIKE \'%${attr['artists'].toLowerCase()}%\' `;
     }
     if ('explicit' in attr) {
         query += isFirstFilter(query) + ` explicit = ${attr['explicit']} `;
