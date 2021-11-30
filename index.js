@@ -12,11 +12,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-    doQuery();
-    res.send('hello world!')
+    performQuery().then(result => res.json(result));
 });
 
-const doQuery = () => {
+const performQuery = async () => {
     const bigquery = new BigQuery();
 
     let query = 
@@ -32,6 +31,7 @@ const doQuery = () => {
     .then(results => {
         console.log('query done');
         console.log(results[0]);
+        return { results: results[0] }
     })
     .catch(err => console.error(err));
 
