@@ -1,0 +1,26 @@
+{
+  "name": "itc-630-big-data-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CJT157/ITC-630-Big-Data-Service.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CJT157/ITC-630-Big-Data-Service/issues"
+  },
+  "homepage": "https://github.com/CJT157/ITC-630-Big-Data-Service#readme",
+  "dependencies": {
+    "body-parser": "~1.18.2",
+    "cookie-parser": "~1.4.3",
+    "express": "~4.15.5",
+    "dotenv": "^5.0.1",
+    "@google-cloud/bigquery": "1.0.0"
+  }
+}
