@@ -23,7 +23,7 @@ app.use(function (req, res, next) {
 });
 
 app.post('/', (req, res) => {
-    performQuery().then(result => res.json(result));
+    performQuery(req.body).then(result => res.json(result));
 });
 
 const isFirstFilter = (query) => {
@@ -33,34 +33,13 @@ const isFirstFilter = (query) => {
     return 'WHERE'
 }
 
-const performQuery = async () => {
+const performQuery = async (attr) => {
     const bigquery = new BigQuery();
     const attrList = ['danceability', 'energy', 'key', 'loudness', 'speechiness', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo', 'duration_ms', 'time_signature', 'year']
 
     let query = 
     `SELECT name, artists, album, explicit, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, duration_ms, time_signature, year
     FROM \`hw4-630.spotifysong.songs\` `
-
-    attr = {
-        'name': 'r',
-        'album': 'r',
-        'artists': 'we', 
-        'explicit': true,
-        'danceability': [0.2, 0.9],
-        'energy': [0.2, 0.9],
-        'key': [0, 11],
-        'loudness': [-60, 7],
-        'mode': true,
-        'speechniness': [0, 1], 
-        'acousticness': [0, 1],
-        'instrumentalness': [0, 1],
-        'liveliness': [0, 1],
-        'valence': [0, 1],
-        'tempo': [0, 250],
-        'duration_ms': [0, 4000000],
-        'time_signature': [0, 5], 
-        'year': [1980, 1990]
-    }
 
     if ('name' in attr && attr['name'] != '') {
         query += isFirstFilter(query) + ` lower(name) LIKE \'%${attr['name'].toLowerCase()}%\' `;
@@ -87,11 +66,14 @@ const performQuery = async () => {
     query += `ORDER BY name desc
     LIMIT 100;`;
 
+    console.log(query);
+
     const options = { query: query };
 
     return bigquery.query(options)
     .then(results => {
         console.log('query done');
+        console.log(results[0])
         return { results: results[0] }
     })
     .catch(err => console.error(err));
